@@ -45,7 +45,7 @@ class ZKillboardClient:
         self.__logger: bool = logger
         self.__server_name: str = 'zkillboard.com'
         # можно указать User-Agent в заголовках запросов
-        self.__user_agent: typing.Optional[str] = user_agent
+        self.__user_agent: typing.Optional[str] = f'{user_agent} Maintainer: Qandra Si'
         # данные-состояния, которые были получены во время обработки http-запросов
         self.__last_modified: typing.Optional[datetime.datetime] = None
         # резервируем session-объект, для того чтобы не заниматься переподключениями, а пользоваться keep-alive
@@ -128,7 +128,7 @@ class ZKillboardClient:
         return self.__session
 
     def send_zkb_request_http(self, uri: str, last_modified: typing.Optional[str], body=None) -> requests.Response:
-        headers: typing.Dict[str, str] = {}
+        headers: typing.Dict[str, str] = {"Accept-Encoding": "gzip"}
         if not (last_modified is None) and (body is None):
             headers.update({"If-Modified-Since": last_modified})
         if self.__user_agent:
